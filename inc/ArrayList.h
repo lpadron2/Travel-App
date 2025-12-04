@@ -7,6 +7,7 @@ template <class T> class ArrayList;
 
 template <class T>
 std::ostream &operator<<(std::ostream &os, const ArrayList<T> &list);
+// checking to see if able to push
 
 template <class T> class ArrayList {
 protected:
