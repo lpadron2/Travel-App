@@ -1,11 +1,4 @@
-#include <iostream>
-#include <Graph.h>
 #include <Application.h>
-
-using namespace std;
-
-//Bella was here
-//Julissa was here
 
 int main(){
 

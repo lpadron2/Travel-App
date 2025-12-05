@@ -13,7 +13,7 @@ class Application : public bobcat::Application_ {
     bobcat::Dropdown *start;
     bobcat::Dropdown *dest;
 
-    bobcat::Button *search;
+   bobcat::Button *search;
 
     Fl_Scroll *results;
 
@@ -26,8 +26,7 @@ class Application : public bobcat::Application_ {
     void handleClick(bobcat::Widget *sender);
 
 public:
-    Application(); 
-
+   Application(); 
 };
 
 #endif

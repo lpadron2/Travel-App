@@ -14,7 +14,6 @@ using namespace std;
 Application::Application() {
     initData();
     initInterface();
-
 }
 
 void Application::handleClick(bobcat::Widget *sender) {
