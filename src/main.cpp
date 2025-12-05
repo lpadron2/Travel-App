@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Graph.h>
+#include <Application.h>
 
 using namespace std;
 
@@ -7,6 +8,10 @@ using namespace std;
 //Julissa was here
 
 int main(){
+
+    Application app;
+
+    return app.run();
 
     // Vertex* sfo = new Vertex("San Francisco");
     // Vertex* nyc = new Vertex("New York");
