@@ -29,11 +29,13 @@ struct Edge {
     Vertex *from;
     Vertex *to;
     int weight;
+    int price; // lp
 
-    Edge(Vertex *from, Vertex *to, int weight) {
+    Edge(Vertex *from, Vertex *to, int weight, int price) { // lp
         this->from = from;
         this->to = to;
         this->weight = weight;
+        this->price = price; // lp
     }
 };
 
@@ -49,12 +51,14 @@ struct Waypoint {
     ArrayList<Waypoint *> children;
     int partialCost;
     int weight;
+    int price; // lp
 
     Waypoint(Vertex *v) {
         parent = nullptr;
         vertex = v;
         weight = 0;
         partialCost = 0;
+        price = 0; // lp
     }
 
     void expand() {
@@ -62,6 +66,7 @@ struct Waypoint {
             Waypoint *temp = new Waypoint(vertex->edgeList[i]->to);
             temp->parent = this;
             temp->weight = vertex->edgeList[i]->weight;
+            temp->price = vertex->edgeList[i]->price; // lp
             temp->partialCost = partialCost + vertex->edgeList[i]->weight;
             children.append(temp);
         }
@@ -84,13 +89,13 @@ struct Graph {
 
     void addVertex(Vertex *v) { vertices.append(v); }
 
-    void addEdge(Vertex *x, Vertex *y, int w) {
-        x->edgeList.append(new Edge(x, y, w));
-        y->edgeList.append(new Edge(y, x, w));
+    void addEdge(Vertex *x, Vertex *y, int w, int p) { // lp
+        x->edgeList.append(new Edge(x, y, w, p)); // lp
+        y->edgeList.append(new Edge(y, x, w, p)); // lp
     }
 
-    void addDirectedEdge(Vertex *x, Vertex *y, int w) {
-        x->edgeList.append(new Edge(x, y, w));
+    void addDirectedEdge(Vertex *x, Vertex *y, int w, int p) { // lp
+        x->edgeList.append(new Edge(x, y, w, p)); // lp
     }
 
     Waypoint *bfs(Vertex *start, Vertex *destination) {

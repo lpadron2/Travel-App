@@ -22,7 +22,10 @@ void Application::handleClick(bobcat::Widget *sender) {}
 
 void Application::initData() {
     ifstream inputFile;
+    istringstream stringData;
     string line;
+
+    int v1, v2, dest, price;
 
     inputFile.clear();
 
@@ -37,6 +40,57 @@ void Application::initData() {
         getline(inputFile, line);
 
         cities.append(new Vertex(line));
+    }
+
+    inputFile.close();
+
+    for(int i = 0; i < cities.size(); i++)
+    {
+        g.addVertex(cities[i]);
+    }
+
+    inputFile.clear();
+
+    inputFile.open("./assets/edges.csv");
+
+    while(!inputFile.eof())
+    {
+        while(inputFile.peek() == ' ')
+        {
+            inputFile.get();
+        }
+        getline(inputFile, line);
+
+        if(inputFile.good())
+        {
+            stringData.clear();
+            stringData.str(line);
+
+            while(stringData.good())
+            {
+                string token;
+
+                if(getline(stringData, token, ','))
+                {
+                    v1 = stoi(token);
+                }
+                if(getline(stringData, token, ','))
+                {
+                    v2 = stoi(token);
+                }
+                if(getline(stringData, token, ','))
+                {
+                    dest = stoi(token);
+                }
+                if(getline(stringData, token, ','))
+                {
+                    price = stoi(token);
+                }
+
+                g.addEdge(cities[v1], cities[v2], dest, price);
+            }
+            
+        }
     }
 
     inputFile.close();
