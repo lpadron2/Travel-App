@@ -18,7 +18,14 @@ Application::Application() {
     initInterface();
 }
 
-void Application::handleClick(bobcat::Widget *sender) {}
+void Application::handleClick(bobcat::Widget *sender) {
+
+    results->clear();
+    window->redraw();
+    
+    int startIndex = start->value();
+    int destIndex = dest->value();
+}
 
 void Application::initData() {
     ifstream inputFile;
