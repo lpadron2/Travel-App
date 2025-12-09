@@ -28,11 +28,11 @@ void Application::handleClick(bobcat::Widget *sender) {
 
     Waypoint *path = g.ucs(cities[startIndex], cities[destIndex]);
 
-    if (preference->text() == "Least stops") {
+    if (choice->text() == "Least number of stops") {
         path = g.bfs(cities[startIndex], cities[destIndex]);
     }
     
-    else if (preference->text() == "Cheapest Price"){
+    else if (choice->text() == "Cheapest price"){
         path = g.ucs(cities[startIndex], cities[destIndex]);
     }
 
@@ -142,7 +142,7 @@ void Application::initInterface() {
 
     start = new Dropdown(20, 40, 360, 25, "Starting Point");
     dest = new Dropdown(20, 100, 360, 25, "Destination");
-    preference = new Dropdown(20,160, 360, 25, "Preference" );
+    choice = new Dropdown(20,160, 360, 25, "Preference" );
 
     for(int i = 0; i < cities.size(); i++)
     {
@@ -150,14 +150,19 @@ void Application::initInterface() {
         dest ->add(cities[i]->data);
     }
 
-    preference->add("Cheapest Price");
-    preference->add("Least stops");
-    preference->add("Least time");
+
+    choice = new Dropdown(20,160,360,25,"Preference");
+    choice->add("Cheapest price");
+    choice->add("Shortest travel time");
+    choice->add("Least number of stops");
+
 
     search = new Button(20, 220, 360, 25, "Search");
     ON_CLICK(search, Application::handleClick);
 
-    results = new Fl_Scroll(20, 280, 360, 180, "Results");
+
+    results = new Fl_Scroll(20, 300, 360, 180, "Results");
+
     results->align(FL_ALIGN_BOTTOM_LEFT);
     results->box(FL_THIN_DOWN_BOX);
 
