@@ -12,6 +12,7 @@ class Application : public bobcat::Application_ {
     bobcat::Window *window;
     bobcat::Dropdown *start;
     bobcat::Dropdown *dest;
+    bobcat::Dropdown *choice;
 
    bobcat::Button *search;
 

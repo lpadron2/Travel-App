@@ -104,7 +104,7 @@ void Application::initData() {
 }
 
 void Application::initInterface() {
-    window = new Window(100, 100, 400, 400, "Flight Planner");
+    window = new Window(100, 100, 400, 600, "Flight Planner");
 
     start = new Dropdown(20, 40, 360, 25, "Starting Point");
     dest = new Dropdown(20, 100, 360, 25, "Destination");
@@ -115,10 +115,15 @@ void Application::initInterface() {
         dest ->add(cities[i]->data);
     }
 
-    search = new Button(20, 150, 360, 25, "Search");
+    choice = new Dropdown(20,160,360,25,"Preference");
+    choice->add("Cheapest price");
+    choice->add("Shortest travel time");
+    choice->add("Least number of stops");
+
+    search = new Button(20, 220, 360, 25, "Search");
     ON_CLICK(search, Application::handleClick);
 
-    results = new Fl_Scroll(20, 170, 360, 180, "Results");
+    results = new Fl_Scroll(20, 300, 360, 180, "Results");
     results->align(FL_ALIGN_BOTTOM_LEFT);
     results->box(FL_THIN_DOWN_BOX);
 
