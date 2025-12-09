@@ -163,8 +163,8 @@ void Application::initInterface() {
 
     results = new Fl_Scroll(20, 300, 360, 180, "Results");
 
-    results->align(FL_ALIGN_BOTTOM_LEFT);
-    results->box(FL_THIN_DOWN_BOX);
+    results->align(FL_ALIGN_TOP_LEFT);
+    results->box(FL_THIN_UP_BOX);
 
     window->show();
 }
