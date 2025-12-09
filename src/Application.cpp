@@ -25,6 +25,40 @@ void Application::handleClick(bobcat::Widget *sender) {
     
     int startIndex = start->value();
     int destIndex = dest->value();
+
+    Waypoint *path = g.ucs(cities[startIndex], cities[destIndex]);
+
+    if (preference->text() == "Least stops") {
+        path = g.bfs(cities[startIndex], cities[destIndex]);
+    }
+    
+    else if (preference->text() == "Cheapest Price"){
+        path = g.ucs(cities[startIndex], cities[destIndex]);
+    }
+
+    system("clear");
+
+    if (path) {
+        cout << "We found a path" << endl;
+        Waypoint *temp = path;
+        int y = results->y() + 10;
+        while (temp != nullptr) {
+            results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
+            y += 40;
+            if (temp->parent != nullptr) {
+                results->add(new TextBox(
+                    40, y, 300, 25,
+                    "    Flight time: " + to_string(temp->weight) + " hours"));
+                y += 40;
+            }
+            cout << temp->vertex->data << " " << temp->partialCost << endl;
+            temp = temp->parent;
+
+            window->redraw();
+        }
+    } else {
+        cout << "There is no path" << endl;
+    }
 }
 
 void Application::initData() {
@@ -104,10 +138,11 @@ void Application::initData() {
 }
 
 void Application::initInterface() {
-    window = new Window(100, 100, 400, 400, "Flight Planner");
+    window = new Window(100, 100, 400, 600, "Flight Planner");
 
     start = new Dropdown(20, 40, 360, 25, "Starting Point");
     dest = new Dropdown(20, 100, 360, 25, "Destination");
+    preference = new Dropdown(20,160, 360, 25, "Preference" );
 
     for(int i = 0; i < cities.size(); i++)
     {
@@ -115,10 +150,14 @@ void Application::initInterface() {
         dest ->add(cities[i]->data);
     }
 
-    search = new Button(20, 150, 360, 25, "Search");
+    preference->add("Cheapest Price");
+    preference->add("Least stops");
+    preference->add("Least time");
+
+    search = new Button(20, 220, 360, 25, "Search");
     ON_CLICK(search, Application::handleClick);
 
-    results = new Fl_Scroll(20, 170, 360, 180, "Results");
+    results = new Fl_Scroll(20, 280, 360, 180, "Results");
     results->align(FL_ALIGN_BOTTOM_LEFT);
     results->box(FL_THIN_DOWN_BOX);
 
