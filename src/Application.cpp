@@ -26,39 +26,90 @@ void Application::handleClick(bobcat::Widget *sender) {
     int startIndex = start->value();
     int destIndex = dest->value();
 
-    Waypoint *path = g.ucs(cities[startIndex], cities[destIndex]);
+    Waypoint *path;
 
     if (choice->text() == "Least number of stops") {
         path = g.bfs(cities[startIndex], cities[destIndex]);
+
+        system("clear");
+
+        if (path) {
+            cout << "We found a path" << endl;
+            Waypoint *temp = path;
+            int y = results->y() + 10;
+            while (temp != nullptr) {
+                results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
+                y += 40;
+                if (temp->parent != nullptr) {
+                    results->add(new TextBox(
+                        40, y, 300, 25,
+                        "    Flight time: " + to_string(temp->weight) + " hours")); 
+                    y += 40;
+                }
+                cout << temp->vertex->data << " " << temp->partialCost << endl;
+                temp = temp->parent;
+
+                window->redraw();
+            }
+        } else {
+            cout << "There is no path" << endl;
+        }
     }
     
     else if (choice->text() == "Cheapest price"){
-        path = g.ucs(cities[startIndex], cities[destIndex]);
-    }
+        path = g.ucsMoney(cities[startIndex], cities[destIndex]);
 
-    system("clear");
+        system("clear");
 
-    if (path) {
-        cout << "We found a path" << endl;
-        Waypoint *temp = path;
-        int y = results->y() + 10;
-        while (temp != nullptr) {
-            results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
-            y += 40;
-            if (temp->parent != nullptr) {
-                results->add(new TextBox(
-                    40, y, 300, 25,
-                    "    Flight time: " + to_string(temp->weight) + " hours"));
+        if (path) {
+            cout << "We found a path" << endl;
+            Waypoint *temp = path;
+            int y = results->y() + 10;
+            while (temp != nullptr) {
+                results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
                 y += 40;
-            }
-            cout << temp->vertex->data << " " << temp->partialCost << endl;
-            temp = temp->parent;
+                if (temp->parent != nullptr) {
+                    results->add(new TextBox(40, y, 300, 25, "    Flight cost: $ " + to_string(temp->price))); 
+                    y += 40;
+                }
+                cout << temp->vertex->data << " " << temp->partialCostMoney << endl;
+                temp = temp->parent;
 
-            window->redraw();
+                window->redraw();
+            }
+        } else {
+            cout << "There is no path" << endl;
         }
-    } else {
-        cout << "There is no path" << endl;
     }
+    else if(choice->text() == "Shortest travel time")
+    {
+        path = g.ucs(cities[startIndex], cities[destIndex]);
+
+        system("clear");
+
+        if (path) {
+            cout << "We found a path" << endl;
+            Waypoint *temp = path;
+            int y = results->y() + 10;
+            while (temp != nullptr) {
+                results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
+                y += 40;
+                if (temp->parent != nullptr) {
+                    results->add(new TextBox(
+                        40, y, 300, 25,
+                        "    Flight time: " + to_string(temp->weight) + " hours")); 
+                    y += 40;
+                }
+                cout << temp->vertex->data << " " << temp->partialCost << endl;
+                temp = temp->parent;
+
+                window->redraw();
+            }
+        } else {
+            cout << "There is no path" << endl;
+        }
+    }
+
 }
 
 void Application::initData() {
