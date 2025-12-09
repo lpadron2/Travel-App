@@ -1,5 +1,6 @@
 #include <Application.h>
 #include <FL/Enumerations.H>
+#include <FL/Fl_Box.H>
 #include <FL/Fl_Scroll.H>
 #include <bobcat_ui/bobcat_ui.h>
 #include <bobcat_ui/button.h>
@@ -25,6 +26,9 @@ void Application::handleClick(bobcat::Widget *sender) {
     
     int startIndex = start->value();
     int destIndex = dest->value();
+    int n = 0;
+    int totalMoney = 0;
+    int totalTravel = 0;
 
     Waypoint *path;
 
@@ -36,6 +40,11 @@ void Application::handleClick(bobcat::Widget *sender) {
         if (path) {
             cout << "We found a path" << endl;
             Waypoint *temp = path;
+
+            totalMoney = temp->partialCostMoney;
+            totalTravel = temp->partialCost;
+
+
             int y = results->y() + 10;
             while (temp != nullptr) {
                 results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
@@ -45,12 +54,17 @@ void Application::handleClick(bobcat::Widget *sender) {
                         40, y, 300, 25,
                         "    Flight time: " + to_string(temp->weight) + " hours")); 
                     y += 40;
+                    n++;
                 }
                 cout << temp->vertex->data << " " << temp->partialCost << endl;
                 temp = temp->parent;
 
                 window->redraw();
             }
+            totalPrice->label("Total Price: $" + to_string(totalMoney));
+            totalTime->label("Total Time: " + to_string(totalTravel) + " hours");
+            totalStops->label("Total Stops: " + to_string(n));
+
         } else {
             cout << "There is no path" << endl;
         }
@@ -58,12 +72,17 @@ void Application::handleClick(bobcat::Widget *sender) {
     
     else if (choice->text() == "Cheapest price"){
         path = g.ucsMoney(cities[startIndex], cities[destIndex]);
-
+   
         system("clear");
 
         if (path) {
             cout << "We found a path" << endl;
             Waypoint *temp = path;
+
+            totalMoney = temp->partialCostMoney;
+            totalTravel = temp->partialCost;
+
+
             int y = results->y() + 10;
             while (temp != nullptr) {
                 results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
@@ -71,13 +90,19 @@ void Application::handleClick(bobcat::Widget *sender) {
                 if (temp->parent != nullptr) {
                     results->add(new TextBox(40, y, 300, 25, "    Flight cost: $ " + to_string(temp->price))); 
                     y += 40;
+                    n++;
                 }
                 cout << temp->vertex->data << " " << temp->partialCostMoney << endl;
                 temp = temp->parent;
 
                 window->redraw();
             }
-        } else {
+            totalPrice->label("Total Price: $" + to_string(totalMoney));
+            totalTime->label("Total Time: " + to_string(totalTravel) + " hours");
+            totalStops->label("Total Stops: " + to_string(n));
+        } 
+        else 
+        {
             cout << "There is no path" << endl;
         }
     }
@@ -87,9 +112,15 @@ void Application::handleClick(bobcat::Widget *sender) {
 
         system("clear");
 
-        if (path) {
+        if (path)
+         {
             cout << "We found a path" << endl;
             Waypoint *temp = path;
+
+            totalMoney = temp->partialCostMoney;
+            totalTravel = temp->partialCost;
+
+
             int y = results->y() + 10;
             while (temp != nullptr) {
                 results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
@@ -99,13 +130,19 @@ void Application::handleClick(bobcat::Widget *sender) {
                         40, y, 300, 25,
                         "    Flight time: " + to_string(temp->weight) + " hours")); 
                     y += 40;
+                    n++;
                 }
                 cout << temp->vertex->data << " " << temp->partialCost << endl;
                 temp = temp->parent;
 
                 window->redraw();
             }
-        } else {
+            totalPrice->label("Total Price: $" + to_string(totalMoney));
+            totalTime->label("Total Time: " + to_string(totalTravel) + " hours");
+            totalStops->label("Total Stops: " + to_string(n));
+        }
+        else
+        {
             cout << "There is no path" << endl;
         }
     }
@@ -193,7 +230,8 @@ void Application::initInterface() {
 
     start = new Dropdown(20, 40, 360, 25, "Starting Point");
     dest = new Dropdown(20, 100, 360, 25, "Destination");
-    choice = new Dropdown(20,160, 360, 25, "Preference" );
+    
+  
 
     for(int i = 0; i < cities.size(); i++)
     {
@@ -208,14 +246,24 @@ void Application::initInterface() {
     choice->add("Least number of stops");
 
 
+    summary = new TextBox(20,380,360,100, "Summary");
+    placeHold = new TextBox(20,390,360,100,"----------------------------------------------");
+    totalPrice = new TextBox(20,410, 360,100,"");
+    totalTime = new TextBox(20,450, 360,100,"");
+    totalStops = new TextBox(20,490, 360,100,"");
+
+
     search = new Button(20, 220, 360, 25, "Search");
     ON_CLICK(search, Application::handleClick);
 
 
-    results = new Fl_Scroll(20, 300, 360, 180, "Results");
+    results = new Fl_Scroll(20, 300, 360, 120, "Results");
+    
 
     results->align(FL_ALIGN_TOP_LEFT);
     results->box(FL_THIN_UP_BOX);
+
+
 
     window->show();
 }
