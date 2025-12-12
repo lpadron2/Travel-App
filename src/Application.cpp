@@ -40,6 +40,8 @@ void Application::handleClick(bobcat::Widget *sender) {
         if (path) {
             cout << "We found a path" << endl;
             Waypoint *temp = path;
+            Stack<string> names, cnames;
+            Stack<int> wt, cwt;
 
             totalMoney = temp->partialCostMoney;
             totalTravel = temp->partialCost;
@@ -47,19 +49,37 @@ void Application::handleClick(bobcat::Widget *sender) {
 
             int y = results->y() + 10;
             while (temp != nullptr) {
-                results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
-                y += 40;
+            
+                names.push(temp->vertex->data);
+                cnames.push(temp->vertex->data);
+
                 if (temp->parent != nullptr) {
-                    results->add(new TextBox(
-                        40, y, 300, 25,
-                        "    Flight time: " + to_string(temp->weight) + " hours")); 
-                    y += 40;
+                    
+                    wt.push(temp->weight);
                     n++;
                 }
-                cout << temp->vertex->data << " " << temp->partialCost << endl;
+                cwt.push(temp->partialCost);
                 temp = temp->parent;
 
                 window->redraw();
+            }
+
+            while(!names.isEmpty())
+            {
+                results->add(new TextBox(40, y, 300, 25, names.pop()));
+                y += 40;
+
+                if(!wt.isEmpty())
+                {
+                    results->add(new TextBox(
+                        40, y, 300, 25,
+                        "    Flight time: " + to_string(wt.pop()) + " hours")); 
+                    y += 40;
+                }
+                
+                cout << cnames.pop() << " " << cwt.pop() << endl;
+                window->redraw();
+
             }
             totalPrice->label("Total Price: $" + to_string(totalMoney));
             totalTime->label("Total Time: " + to_string(totalTravel) + " hours");
@@ -78,6 +98,8 @@ void Application::handleClick(bobcat::Widget *sender) {
         if (path) {
             cout << "We found a path" << endl;
             Waypoint *temp = path;
+            Stack<string> names, cnames;
+            Stack<int> wt, cwt;
 
             totalMoney = temp->partialCostMoney;
             totalTravel = temp->partialCost;
@@ -85,17 +107,36 @@ void Application::handleClick(bobcat::Widget *sender) {
 
             int y = results->y() + 10;
             while (temp != nullptr) {
-                results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
-                y += 40;
+                
+                names.push(temp->vertex->data);
+                cnames.push(temp->vertex->data);
+
                 if (temp->parent != nullptr) {
-                    results->add(new TextBox(40, y, 300, 25, "    Flight cost: $ " + to_string(temp->price))); 
-                    y += 40;
+
+                    wt.push(temp->price);
                     n++;
                 }
-                cout << temp->vertex->data << " " << temp->partialCostMoney << endl;
+                cwt.push(temp->partialCostMoney);
                 temp = temp->parent;
 
                 window->redraw();
+            }
+
+            while(!names.isEmpty())
+            {
+                results->add(new TextBox(40, y, 300, 25, names.pop()));
+                y += 40;
+
+                if(!wt.isEmpty())
+                {
+                    results->add(new TextBox(
+                        40, y, 300, 25,
+                        "    Flight cost: $" + to_string(wt.pop()))); 
+                    y += 40;
+                }
+                cout << cnames.pop() << " " << cwt.pop() << endl;
+                window->redraw();
+
             }
             totalPrice->label("Total Price: $" + to_string(totalMoney));
             totalTime->label("Total Time: " + to_string(totalTravel) + " hours");
@@ -116,6 +157,8 @@ void Application::handleClick(bobcat::Widget *sender) {
          {
             cout << "We found a path" << endl;
             Waypoint *temp = path;
+            Stack<string> names, cnames;
+            Stack<int> wt, cwt;
 
             totalMoney = temp->partialCostMoney;
             totalTravel = temp->partialCost;
@@ -123,19 +166,36 @@ void Application::handleClick(bobcat::Widget *sender) {
 
             int y = results->y() + 10;
             while (temp != nullptr) {
-                results->add(new TextBox(40, y, 300, 25, temp->vertex->data));
-                y += 40;
+                
+                names.push(temp->vertex->data);
+                cnames.push(temp->vertex->data);
+
                 if (temp->parent != nullptr) {
-                    results->add(new TextBox(
-                        40, y, 300, 25,
-                        "    Flight time: " + to_string(temp->weight) + " hours")); 
-                    y += 40;
+                    
+                    wt.push(temp->weight);
                     n++;
                 }
-                cout << temp->vertex->data << " " << temp->partialCost << endl;
+                cwt.push(temp->partialCost);
                 temp = temp->parent;
 
                 window->redraw();
+            }
+
+            while(!names.isEmpty())
+            {
+                results->add(new TextBox(40, y, 300, 25, names.pop()));
+                y += 40;
+
+                if(!wt.isEmpty())
+                {
+                    results->add(new TextBox(
+                        40, y, 300, 25,
+                        "    Flight time: " + to_string(wt.pop()) + " hours")); 
+                    y += 40;
+                }
+                cout << cnames.pop() << " " << cwt.pop() << endl;
+                window->redraw();
+
             }
             totalPrice->label("Total Price: $" + to_string(totalMoney));
             totalTime->label("Total Time: " + to_string(totalTravel) + " hours");
